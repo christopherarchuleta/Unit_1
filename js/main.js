@@ -10,6 +10,41 @@ function myfunc(){
 
 window.onload = myfunc();
 
+// Using AJAX with native JS functions
+function jsAjax(){
+  // Create function to request AJAX
+  var ajaxRequest = new XMLHttpRequest();
+  // Define variable to hold data
+  var mydata;
+
+  // Create event handler to send data to callback function
+  // where it can be held while page loads
+  ajaxRequest.onreadystatestage = function(){
+    if (ajaxRequest.readyState == 4){
+      callback(ajaxRequest.response);
+    };
+  };
+
+  // Open server connection
+  ajaxRequest.open('GET','data/MegaCities.geojson',true);
+
+  // Make data response type JSON
+  ajaxRequest.responseType = "json";
+
+  // Send the request
+  ajaxRequest.send();
+};
+
+// Define callback function
+function callback(response){
+  // Tasks using data are in this block so that they can be
+  // used as server responds to data requests
+  // Print data by calling it within AJAX method
+  var mydata = ajaxRequest.response;
+  console.log(mydata);
+  console.log(response);
+};
+
 // Initialize function when page loads, which calls the table function
 function initialize(){
   newTable();
@@ -68,6 +103,10 @@ function newTable(){
   mydiv.appendChild(table);
 };
 
+// console.log(mydata);
+
 // Call the initialize function after elements load
 window.onload = initialize();
+// Call AJAX function after elements load
+window.onload = jsAjax();
 // Scripts by Chris Archuleta, 2020
